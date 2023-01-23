@@ -2,6 +2,6 @@
 
 * [Home](/)
 
-* [Markdown](Basic_skills_for_Markdown.md)
+* [Markdown](Markdown_1.md)
 
-* [Docsify to creat pages](Upload_MD_to_GitHub.md)
+* [Docsify to creat pages](Docsify-GithubPages_1.md)

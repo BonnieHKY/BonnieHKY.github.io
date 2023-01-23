@@ -1,3 +1,3 @@
 # Headline
 
-> An awesome project.
+> Start to learn Bio-Informatics.
