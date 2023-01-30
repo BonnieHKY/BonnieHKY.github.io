@@ -78,7 +78,7 @@
   
   子网掩码用于把IP地址划分为网络地址和主机地址，判断两台计算机是否在同一个子网中
   
-  ![](C:\Users\86180\AppData\Roaming\marktext\images\2023-01-25-15-19-21-image.png)
+  ![Linux2.1](..\figure\Linux2.1.png)
 
 - **默认网关**  GATEWAY
   

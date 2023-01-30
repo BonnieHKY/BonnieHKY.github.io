@@ -4,7 +4,7 @@
 
 ## 指令的结构
 
-![](C:\Users\86180\AppData\Roaming\marktext\images\2023-01-27-16-27-02-image.png)
+![Linux3.1](..\figure\Linux3.1.png)
 
 - 一行指令中第一个输入的部分是指令（command）或者可执行文件案（如脚本script）
 

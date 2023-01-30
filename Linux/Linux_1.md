@@ -49,9 +49,3 @@ More in [WSL官方教程](https://learn.microsoft.com/zh-cn/windows/wsl/)
    ```
    
    重新打开Ubuntu进行安装，安装后设计用户名和密码（在Linux中输入密码不会显示字符）
-   
-   
-   
-   
-   
-   

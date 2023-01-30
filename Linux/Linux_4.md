@@ -70,9 +70,9 @@
 
 ## 文件属性与权限
 
-- 文件属性示意图，使用`ls -l`可以查看文件夹下各文件和目录的属性（详细指令介绍可以查看下方”文件夹具体操作“）：
+- 文件属性示意图，使用`ls -l`可以查看文件夹下各文件和目录的属性（详细指令介绍可以查看”文件夹具体操作“）：
   
-  ![](C:\Users\86180\AppData\Roaming\marktext\images\2023-01-28-21-10-35-image.png)
+  ![Linux4.1](..\figure\Linux4.1.png)
   
   > 第一栏表示文件/文件夹的类型与权限（permission），共10个字符。
   > 
@@ -88,109 +88,116 @@
   > 
   > 第七栏表示这个文件（或目录）的名称
 
-- 文件的类型与权限码
-  
-  <img title="" src="file:///C:/Users/86180/AppData/Roaming/marktext/images/2023-01-28-22-09-18-image.png" alt="" width="208">
-  
-  - 第一个字符表示文件的类型`d`表示目录；`-`表示文件；`l`表示链接文件（link file）；`b`表示设备文件中可供储存的周边设备（可随机存取设备）；`c`表示设备文件中的序列埠设备，如键盘、鼠标等（一次性读取设备）。
-  
-  - 下面的九个字符以`rwx`三个参数为一组，依次代表文件拥有者、加入此群组用户、未加入此群组的其它用户所拥有的权限。`r`代表可读（read），`w`代表可写（write），`x`代表可执行（execute），三个参数的位置是固定的，若没有权限则显示`-`。
+## 文件的类型与权限码
 
-- 改变文件/文件夹权限：`chmod`（change mode)
-  
-  方式1：使用数字类型修改文件权限，用法为`chmod [-R] xyz [file]`
-  
-  - 数字类型权限`xyz`使用x、y、z的数值分别代表owner、group、others三种身份的权限。计算方式为：`r`权限+4，`w`权限+2，`x`权限+1，`-`+0，将三种身份的权限进行加和计算则分别得到数字类型权限`xyz`。
-  
-  ![](C:\Users\86180\AppData\Roaming\marktext\images\2023-01-28-21-51-57-image.png)
-  
-  - `-R`、`--recursive`：将次目录下的文件与目录全部进行修改
+          ![Linux4.2](..\figure\Linux4.2.png)
 
-  方式2：使用符号类型修改文件权限，用法为`chmod [[ugoa][-+=][rwx]] [file]`。其中，u：user，g：group，o：others，a：all。
+- 第一个字符表示文件的类型`d`表示目录；`-`表示文件；`l`表示链接文件（link file）；`b`表示设备文件中可供储存的周边设备（可随机存取设备）；`c`表示设备文件中的序列埠设备，如键盘、鼠标等（一次性读取设备）。
 
-- 把`.bashrc`文件的权限设置为`rwxr-xr-x`：
-  
-  ```
-  chmod u=rwx,go=rx .bashrc
-  ```
+- 下面的九个字符以`rwx`三个参数为一组，依次代表文件拥有者、加入此群组用户、未加入此群组的其它用户所拥有的权限。
 
-- 把所有人（all）的execute权限移除：
-  
-  ```
-  chmod a-x .bashrc
-  ```
+- `r`代表可读（read），`w`代表可写（write），`x`代表可执行（execute），三个参数的位置是固定的，若没有权限则显示`-`。
 
-- 为所有人增加execute权限：
-  
-  ```
-  chmod a+x .bashrc
-  ```
 
-## 文件夹基本操作
 
-1. 显示当前目录：`pwd`（print working directory）
+## 修改文件的属性与权限
+
+1. `chgrp` (change group)：改变文件或目录所属群组
+   
+   - 语法：`chgrp [-options] group file`
+   
+   - 选项：`-R`一同更改目录下的文件和次目录
+
+2. `chown` (change owner)：改变文件拥有者
+   
+   - 语法：
+     
+     `chown [-options] owner file`：`chown`可以仅用于更改文件的拥有者
+     
+     `chown [-options] owner:group file`：也可以用于同时更改文件的拥有者和所属群组
+
+3. `chmod` (change mode)：改变文件的权限
+   
+   **方式1**：使用数字类型修改文件权限，用法为`chmod [-R] xyz [file]`
+   
+   - 数字类型权限`xyz`使用x、y、z的数值分别代表owner、group、others三种身份的权限。计算方式为：`r`权限+4，`w`权限+2，`x`权限+1，`-`+0，将三种身份的权限进行加和计算则分别得到数字类型权限`xyz`。
+     
+     ![Linux4.3](..\figure\Linux4.3.png)
+   
+   - `-R`、`--recursive`：将次目录下的文件与目录全部进行修改
+   
+   **方式2**：使用符号类型修改文件权限，用法为`chmod [[ugoa][-+=][rwx]] [file]`。其中，u：user，g：group，o：others，a：all。
+   
+   - 把`.bashrc`文件的权限设置为`rwxr-xr-x`：
    
    ```
-   bonniehky@Bonnie_U:~$ pwd
-   /home/bonniehky
+   chmod u=rwx,go=rx .bashrc
+   ```
+   
+   - 把所有人（all）的execute权限移除：
+   
+   ```
+   chmod a-x .bashrc
+   ```
+   
+   - 为所有人增加execute权限：
+   
+   ```
+   chmod a+x .bashrc
    ```
 
-2. 显示文件夹中文件（夹）列表：`ls`（list directory contents）
-   
-   - 语法：`ls [-options] [file]`
-   
-   - 选项（部分）：
-     
-     `none`：显示目录下的文件及目录名称，不含隐藏文件、当前目录和父目录。
-     
-     `-a` (all)：显示所有文件及目录 （`.`开头的隐藏文件也会列出）
-     
-     `-A` (almost all)：同`-a`，但不列出`.`（目前目录）及 `..` （父目录）
-     
-     `-c`：按修改时间排序（最新再前）；与`-lt`联用时，显示修改时间并按修改时间排序（最新在前）；与`-l`联用时，显示修改时间，并按文件名排序
-     
-     `-h`：与`-l`和`-s`联用，按`1K 234M 2G`的形式打印文件大小
-     
-     `-l`：除文件名称外，将文件型态、权限、拥有者、文件大小等资讯详细列出
-     
-     `-r`：将文件以相反次序显示
-     
-     `-t`：按时间次序输出，通过`--time`改变时间定义，默认为修改时间。
-     
-     `-R`：若目录下有文件，则以下之文件亦皆依序列出
-   
-   - 示例：
-     
-     ```
-     bonniehky@Bonnie_U:~$ ls -Fal
-     total 28
-     drwxr-x--- 2 bonniehky bonniehky 4096 Jan 28 17:41 ./  #当前目录
-     drwxr-xr-x 3 root      root      4096 Jan 24 08:45 ../  #父目录
-     -rw------- 1 bonniehky bonniehky  874 Jan 28 11:23 .bash_history
-     -rw-r--r-- 1 bonniehky bonniehky  220 Jan 24 08:45 .bash_logout
-     -rw-r--r-- 1 bonniehky bonniehky 3771 Jan 24 08:45 .bashrc
-     -rw------- 1 bonniehky bonniehky   20 Jan 28 17:41 .lesshst
-     -rw-r--r-- 1 bonniehky bonniehky    0 Jan 28 10:08 .motd_shown
-     -rw-r--r-- 1 bonniehky bonniehky  807 Jan 24 08:45 .profile
-     -rw-r--r-- 1 bonniehky bonniehky    0 Jan 27 16:49 .sudo_as_admin_successful
-     ```
+## 文件的时间参数
 
-3. 更换目录：`cd`（change directory）
-   
-   - 语法：`cd [PATH]`
+- modification time (mtime)
+  
+  当文件的数据内容（不含属性和权限）变更时，会更新此时间。默认情况下，`ls`显示的是该最近修改时间。
 
-4. 创建新文件夹：`mkdir`（make directories）
-   
-   - 语法：`mkdir [-options] [filename]`
-   
-   - 选项（部分）：
-     
-     `-m`，`--mode`：手动设置新建目录的权限（设置方式同`chmod`）；若不设置，则默认为`a=rwx`。
-     
-     `-p`，`--parents`：直接创建所需目录（在上层目录未创建时先创建上层目录)
+- status time (ctime)
+  
+  当文件的状态（属性和权限）改变时，会更新此时间。
 
-5. 删除空文件夹：`rmdir`（remove empty directories）
-   
-   - 语法：`rmdir [-options] [directory]`
+- access time (atime)
+  
+  当文件的内容被取用，会更新此时间。例如使用`cat`读取文件内容就会更新此时间。
 
-6.  
+- `touch`：修改文件的时间
+  
+  - 语法：`touch [-options] file`
+  
+  - 选项（部分）：
+    
+    `-a`：仅修改atime（默认情况下mtime、ctime、atime都会更新为当前时间）
+    
+    `-c`、`--no-creat`：仅修改文件的时间，若该文件不存在则不自动创建新文件（默认情况下若文件不存在则创建一个新的空文件）
+    
+    `-d`：后面可以接指定的日期而不用使用目前的日期，也可以使用`--date=STRING`定义时间
+    
+    `-m`：仅修改mtime
+    
+    `-t`：后面可以接指定的日期而不用使用目前的日期，格式为`YYYYMMDD`
+  
+  - 示例：
+    
+    `touch filename`：默认把三个时间更新为当前时间
+    
+    ```
+    bonniehky@Bonnie_U:/tmp$ ll wtmp;ll --time=atime wtmp;ll --time=ctime wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 29 17:57 wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 29 17:57 wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 29 17:57 wtmp
+    bonniehky@Bonnie_U:/tmp$ touch wtmp
+    bonniehky@Bonnie_U:/tmp$ ll wtmp;ll --time=atime wtmp;ll --time=ctime wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 30 11:29 wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 30 11:29 wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 30 11:29 wtmp
+    ```
+    
+    `touch -d "yesterday" filename`：把mtime和atime改成昨天当前同一时间，而ctime更新为当前时间
+    
+    ```
+    bonniehky@Bonnie_U:/tmp$ touch -d "yesterday" wtmp
+    bonniehky@Bonnie_U:/tmp$  ll wtmp;ll --time=atime wtmp;ll --time=ctime wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 29 11:31 wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 29 11:31 wtmp
+    -rw-r--r-- 1 bonniehky bonniehky 0 Jan 30 11:31 wtmp
+    ```
