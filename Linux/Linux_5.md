@@ -354,3 +354,135 @@
    - 如果想打印第x行至第y行的内容：`head -n y filename | tail -n y-x+1`，`|`表示前面指令输出的讯息交由后续指令继续使用。
 
 8. `od`：读取执行文本，由于可执行文本通常是binary file，因此使用该命令读取其内容。如果使用`cat`读取，可能读取到乱码。
+
+## 文件的搜索
+
+1. `which`：寻找可执行文件（搜索指令的文件路径）
+   
+   - 语法：`which [-a] command`
+   
+   - 选项：`-a`表示所有由PATH目录中可以找到的指令均列出，而不止第一个被找到的指令
+   
+   - 示例：
+     
+     ```
+     bonniehky@Bonnie_U:~$ which ls
+     /usr/bin/ls
+     bonniehky@Bonnie_U:~$ which -a ls
+     /usr/bin/ls
+     /bin/ls
+     ```
+
+2. `type`
+
+3. `whereis`：仅在系统的特定目录下搜索文件或目录的路径
+   
+   - 语法：`whereis [-options] filename/dirname`
+   
+   - 选项：
+     
+     `-l`：可以罗列出`whereis`去查找的几个主要目录，主要针对binary可执行文件和`/usr/share/man`下的man page文件等。
+     
+     `-b`：只找binary格式的文件
+     
+     `-m`：只找在说明文档路径`/usr/share/man`下的文件
+     
+     `-s`：只找source来源文件
+     
+     `-u`：查找不在上述三个项目中的其它特殊文件
+
+4. `locate`、`plocate`：查找包含关键词的文件
+   
+   - `locate`寻找数据是由已创建的数据库/var/lib/mlocate/mlocate.db中查找（`plocate`对应/var/lib/plocate/plocate.db），而不用在硬盘中查找，因此查找速度很快。`plocate`是一个更新、搜索速度更快的`locate`。
+   
+   - 语法：`(p)locate [-options] keywords`
+   
+   - 选项：
+     
+     `-i`、`--igonre-case`：忽略大小写差异
+     
+     `-c`、`--count`：不输出文件路径，仅输出找到的文件总数
+     
+     `-l number`：仅输出几个文件
+     
+     `-r`：后面可接正则表达式的显示方式
+   
+   - `updatedb`：手动更新/var/lib/plocate/plocate.db内的数据。由于`plocate`仅在数据中查找文件，而数据库默认一天更新一次，因此可能无法查找到新创建的文件。为了能够找到文件，需要手动进行更新。
+
+5. `find`：在硬盘中，在指定目录下查找指定文件
+   
+   - 语法：`find [PATH] [option] [action]`
+   
+   - 选项与参数见[Linux下find命令详解](https://blog.csdn.net/l_liangkk/article/details/81294260)
+
+## 文件的压缩和打包
+
+- Linux中压缩指令很多，不同压缩方式对应的解压技术也不相同。可以通过压缩文件的拓展名（虽然Linux中文件的属性与拓展名无关，这仅是为了便于区分不同压缩文件的压缩方式）判断该文件是如何压缩，因而选择对应的解压方式。
+
+- 常见的压缩文件拓展名：
+  
+  | 拓展名        | 压缩程序               |
+  | ---------- | ------------------ |
+  | `.Z`       | compress程序压缩       |
+  | `.zip`     | zip程序压缩（支持Windows） |
+  | `.gz`      | gzip程序压缩           |
+  | `.bz2`     | bzip2程序压缩          |
+  | `.xz`      | xz程序压缩             |
+  | `.tar`     | tar程序打包的数据，没有进行压缩  |
+  | `.tar.gz`  | tar程序打包后由gzip程序压缩  |
+  | `.tar.bz2` | tar程序打包后由bzip2程序压缩 |
+  | `.tar.xz`  | tar程序打包后由xz程序压缩    |
+
+- 常用压缩指令
+  
+  |       | `gzip`                   | `bzip2`                    | `xz`                     |
+  | ----- | ------------------------ | -------------------------- | ------------------------ |
+  | 语法    | `gzip [-cdtv#] filename` | `bzip2 [-cdkvz#] filename` | `xz [-cdklt#] filename`  |
+  | 读取文本  | `zcat`, `zmore`, `zless` | `bcat`, `bmore`, `bless`   | `xcat`, `xmore`, `xless` |
+  | 搜寻关键字 | `zgrep`                  | `bgrep`                    | `xgrep`                  |
+  
+  - 选项与参数
+    
+    `-c`：把压缩的数据输出到屏幕上
+    
+    `-d`：进行解压缩
+    
+    `-k`：在压缩和解压缩的过程中，保留原文件不删除
+    
+    `-l`：列出压缩文件的相关信息（压缩体积，压缩比等）
+    
+    `-t`：用于检验压缩文件的一致性，
+    
+    `-v`：可以显示出压缩比以及压缩前后文件的名称
+    
+    `-#`：`#`为数字1-9，即压缩等级，默认为6，压缩等级越小，压缩速度越快，相应压缩后程度越小。
+
+- `tar`：打包（压缩）指令
+  
+  上述压缩指令在压缩一个目录下的文件时，实质上是对目录下的文件逐个压缩，而不是像WIndows一样压缩成一整个文件包。
+  
+  为了把多个目录和文件压缩成一个大文件，需要使用`tar`指令，在使用`tar`时，可以通过选项在打包的同时进行压缩。
+  
+  - 语法
+    
+    打包压缩：`tar [-z/j/J] [-cv] [-f new_file] source...`
+    
+    解压缩：`tar [-z/j/J] [-xv] [-f tarfile] [-C dirname]`
+    
+    查看：`tar [-z/j/J] [tv] [-f tarfile]`
+  
+  - 选项
+    
+    `-z`, `-j`, `-J`：选择相应的压缩方式，分别对应`gzip`，`bzip2`，`xz`。三个选项不能同时出现在一个表达式中。
+    
+    `-c`：创建打包文件
+    
+    `-x`：解打包/解压缩文件，与`-C`连用可以解压到指定目录下
+    
+    `-t`：查看打包文件包含哪些文件名
+    
+    `-v`：在压缩/解压的过程中查看正在处理的文件名
+    
+    `--exclude=filename`：不打包目录下的某些文件
+  
+  - 
