@@ -49,3 +49,94 @@ More in [WSL官方教程](https://learn.microsoft.com/zh-cn/windows/wsl/)
    ```
    
    重新打开Ubuntu进行安装，安装后设计用户名和密码（在Linux中输入密码不会显示字符）
+
+## 安装Docker
+
+- Docker是一种工具，通过容器（contaniner）用于创建、部署和运行应用程序。容器可以把应用以及与之相关的部件（库、框架、依赖项等）打包为一个包一起交付。Docker容器与虚拟机类似，但不会创建整个虚拟操作系统，而允许应用使用与运行它的系统相同的Linux内核。
+
+- Docker Desktop for Windows 为生成、交付、运行Docker化的应用提供了一个开发环境。通过启用基于WSL2的引擎，可以在同一计算机的Docker Desktop上运行Linux和Windows的容器。
+
+- 虽然Docker Desktop支持Linux和Windows的两个容器，但是两个容器不能同时运行。
+
+### 安装流程
+
+1. 从[Install Docker Desktop on Windows](https://docs.docker.com/desktop/install/windows-install/)下载Docker Desktop Installer.exe
+
+2. 双击运行安装，安装后需要重启
+
+3. 在Windows Shell检查是否安装成功
+   
+   ```
+   PS C:\Users\86180> docker --version
+   Docker version 20.10.23, build 7155243 
+   
+   PS C:\Users\86180> docker run hello-world
+   Unable to find image 'hello-world:latest' locally
+   latest: Pulling from library/hello-world
+   2db29710123e: Pull complete
+   Digest: sha256:6e8b6f026e0b9c419ea0fd02d3905dd0952ad1feea67543f525c73a0a790fefb
+   Status: Downloaded newer image for hello-world:latest
+   
+   Hello from Docker!
+   This message shows that your installation appears to be working correctly.
+   ```
+
+4. 打开Docker-Desktop，注册一个Docker-Hub账号，在Setting-Docker Engine设置镜像：
+   
+   ```
+   {
+     "builder": {
+       "gc": {
+         "defaultKeepStorage": "20GB",
+         "enabled": true
+       }
+     },
+     "experimental": false,
+     "features": {
+       "buildkit": true
+     }, #注意添加逗号
+     "registry-mirrors": [
+       "https://registry.docker-cn.com",
+       "https://docker.mirrors.ustc.edu.cn",
+       "http://hub-mirror.c.163.com"
+     ]
+   }
+   ```
+
+5. 重新设置镜像和容器存放位置（不想放在C盘）
+   
+   首先需要关闭docker-desktop
+   
+   ```
+   PS C:\Users\86180> wsl --list -v
+     NAME                   STATE           VERSION
+   * Ubuntu-22.04           Running         2
+     docker-desktop-data    Stopped         2
+     docker-desktop         Stopped         2
+   PS C:\Users\86180> wsl --export docker-desktop-data D:\Docker-wsl\data\docker-desktop-data.tar
+   PS C:\Users\86180> wsl --export docker-desktop D:\Docker-wsl\distro\docker-desktop.tar
+   PS C:\Users\86180> wsl --unregister docker-desktop-data
+   正在注销...
+   PS C:\Users\86180> wsl --unregister docker-desktop
+   正在注销...
+   PS C:\Users\86180> wsl --import docker-desktop-data D:\Docker-wsl\data D:\Docker-wsl\data\docker-desktop-data.tar
+   PS C:\Users\86180> wsl --import docker-desktop D:\Docker-wsl\distro\ D:\Docker-wsl\distro\docker-desktop.tar
+   ```
+
+### 使用Docker Image
+
+1. `load` ：加载Docker Image
+   
+   ```
+   # 在Windows PowerShell上运行
+   # Usage:  docker load [OPTIONS]
+   # Load an image from a tar archive or STDIN
+   # Options:
+   #  -i, --input string   Read from tar archive file, instead of STDIN
+   #  -q, --quiet          Suppress the load output
+   
+   PS C:\Users\86180> docker load -i D:\Bioinfo-Docker\bioinfo_PartI-PartII-PartIII1-3.tar.gz 
+   # 随后会打印一大段加载信息
+   ```
+
+2. 
