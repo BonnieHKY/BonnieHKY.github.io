@@ -21,3 +21,12 @@
   * [文件与目录的管理](Linux/Linux_5)
   
   * [Vim文书编辑器](Linux/Linux_6.md)
+
+  * [Bash Shell](Linux/Linux_7.md)
+
+* R
+
+  * [R语言入门准备](R/R_1.md)
+
+  * [R语言的数据对象](R/R_2.md)
+
