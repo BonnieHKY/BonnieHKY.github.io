@@ -139,4 +139,32 @@ More in [WSL官方教程](https://learn.microsoft.com/zh-cn/windows/wsl/)
    # 随后会打印一大段加载信息
    ```
 
-2. 
+2. `run`：从一个Image中新建一个Container
+   
+   - 首先需要在宿主机上新建一个文件夹用于和container进行文件共享，此处为`D:\test\Share`
+   
+   - 设置一个在container中用于与宿主机进行共享的文件夹`home/test/share`，此时这两个文件可以在不同系统下访问和交流
+   
+   ```
+   docker run --name=bioinfo -dt -h bioinfo_docker --restart unless-stopped -v D:\test\Share:/home/test/share xfliu1995/bioinfo_tsinghua:2
+   ```
+   
+   - 需要注意Windows下的目录使用`\`而，Linux下的目录使用`/`
+
+3. `exec`：建立了container后，每次只需要启动Docker程序，然后在Power Shell中输入以下命令即可进入container
+   
+   ```
+   docker exec -it bioinfo bash
+   ```
+
+4. `rm`：删除container。
+   
+   - 当误删了某些程序导致container不能正常工作程序时，可以删除container再重新建立一个新的container
+   
+   ```
+   docker rm -f bioinfo
+   ```
+
+5. `rmi`：删除image
+   
+   - 如果某些image加载后不再需要使用，可以使用该命令进行删除
