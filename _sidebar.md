@@ -31,6 +31,6 @@
   * [R语言的数据对象](R/R_2.md)
 - AI for protein design
   
-  - [Python for AI beginner](AI_Beginner/Python_for_AI_Beginner.md)
+  - [Python for AI beginner](AI_Protein/Python.md)
   
-  - [AI and high-throughput engineering for CRISPR system](AI_Beginner/AI and high-throughput engineering for CRISPR system.md)
+  - [Paper](AI_Protein/Contents.md)
