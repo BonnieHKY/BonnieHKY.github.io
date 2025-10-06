@@ -26,6 +26,63 @@
   
   9. attributes：一个包含众多属性的列表，格式为“标签 = 值”，标签与值之间通过空格分开，每个特征之后都有分号（包括最后一个）。例如：`gene_id "YDL248W"; gene_version "1"; gene_name "COS7"; gene_source "ensembl"; gene_biotype "protein_coding";`
 
-## Fastq文件
+## Fastq, Fasta测序文件
+
+### Fastq (.fq)
 
 - Fastq格式是一种基于文本的存储生物序列和对应碱基（或氨基酸）质量的文件格式。
+
+- Fastq文件的一个read数据如下
+  
+  ```
+  test@bioinfo_docker:~/mapping$ cat e_coli_1000_1.fq | head -n 4
+  @r0/1
+  TATTCTTCCGCATCCTTCATACTCCTGCCGGTCAG
+  +
+  EDCCCBAAAA@@@@?>===<;;9:99987776554
+  ```
+  
+  - 第1行：以“@”开头，记录了read id，也可能是测序序列时的坐标和编号
+  
+  - 第2行：测序得到的
+
+### Fasta (.fa)
+
+## Sam文件
+
+- SAM（The Sequence Alignment / Map format）格式，即序列比对文件的格式
+
+- SAM文件由两部分组成，头部区和主体区，都以tab分列。头部区：以’@'开始，体现了比对的一些总体信息。比如比对的SAM格式版本，比对的参考序列，比对使用的软件等。主体区：比对结果，每一个比对结果是一行，有11个主列和一个可选列。
+
+### 头部区简要介绍
+
+1. `@HD VN:1.0 SO:unsorted`（排序类型）
+   
+   - VN是格式版本
+   - SO表示对比序列的类型，有unknown（默认）、unsorted、queryname、coordinate几种
+
+2. `@SQ SN:chrI LN:230218`（序列ID及长度）
+   
+   - 参考序列名，这些参考序列决定了比对结果sort的顺序
+   
+   - SN是参考序列名
+   
+   - LN是参考序列长度
+
+3. `RG ID:sample01`（样品基本信息）
+   
+   - ID：样品的ID号
+   
+   - SM：样品名
+   
+   - LB：文库名
+   
+   - PU：测序
+   
+   - PL：测序平台
+
+4. `@PG ID:Bowtie VN:1.0.0 CL:"bowtie -v 2 -m 10 --best --strata BowtieIndex/YeastGenome -f THA2.fa -S THA2.sam"`（比对所使用的软件及版本）
+   
+   - CL是运行程序
+
+### 主体区简要介绍
