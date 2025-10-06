@@ -1,10 +1,17 @@
 # Robust deep learning–based protein sequence design using ProteinMPNN
 
+Dauparas et al., Science 378, 49–56 (2022)
+
 ### <font color=teal>1. Computational experimental design (Model development & In silico testing)</font>
+
+![Fig.1](./Figures/P1_F1.jpg)
+
+<font color="grey" size="16pt">**Fig. 1. ProteinMPNN architecture.**
+(A) Distances between N, Cα, C, O, and virtual Cβ are encoded and processed using a message-passing neural network (Encoder) to obtain graph node and edge features. The encoded features, together with a partial sequence, are used to generate amino acids iteratively in a random decoding order. (B) A fixed left-to-right decoding cannot use sequence context (green) for preceding positions (yellow), whereas a model trained with random decoding orders can be used with an arbitrary decoding order during the inference. The decoding order can be chosen such that the fixed context is decoded first. (C) Residue positions within and between chains can be tied together, enabling symmetric, repeat protein, and multistate design. In this example, a homotrimer is designed with the coupling of positions in different chains. Predicted unnormalized probabilities for tied positions are averaged to get a single probability distribution from which amino acids are sampled.</font>
 
 #### <font color=teal>1.1 Training Data & Model Optimization</font>
 
-- **Training Dataset**: 19,700 high-resolution single-chain structures from the Protein Data Bank (PDB, X-ray/cryo-EM, resolution <3.5 Å, <10,000 residues), split into train/validation/test sets (80/10/10) using the CATH protein classification system.
+- **Training Dataset**: 19,700 high-resolution single-chain structures from the Protein Data Bank (PDB, X-ray/cryo-EM, resolution <3.5 Å, <10,000 residues), split into train/validation/test sets (80/10/10) using the <span style="background-color: #eaeaea;">CATH protein classification system</span>.
   
   > The **CATH system** (short for *Class, Architecture, Topology, Homology*) is a widely used, hierarchical database and classification framework for organizing protein structures based on their structural and evolutionary relationships. It plays a critical role in structural biology by systematically categorizing proteins from the Protein Data Bank (PDB)—the global repository of experimentally determined protein structures—enabling researchers to study protein evolution, function, and design.
 
@@ -12,9 +19,7 @@
   
   1. **Input Feature Enhancement**: Added interatomic distances (N, Cα, C, O, and virtual Cβ) to replace/reinforce dihedral angles, increasing sequence recovery from 41.2% (baseline) to 49.0%.
   
-  2. **Encoder Edge Updates**: Modified the message-passing neural network (MPNN) to update both node and edge features, improving recovery to 43.1%.
-     
-     > <border-left-color: red>11</border-left-color>
+  2. **Encoder Edge Updates**: Modified the <span style="background-color: #eaeaea;">message-passing neural network (MPNN)</span> to update both node and edge features, improving recovery to 43.1%.
      
      > ##### 1. What is MPNN?
      > 
@@ -29,11 +34,11 @@
   
   3. **Combined Optimization**: Merging feature enhancement and edge updates raised recovery to 50.5%.
   
-  4. **Order-Agnostic Decoding**: Replaced fixed N→C terminal decoding with random permutations, enabling flexible design (e.g., fixed functional motifs) and boosting recovery to 50.8%.
+  4. **Random Decoding**: Replaced fixed N→C terminal decoding with random permutations, enabling flexible design (e.g., fixed functional motifs) and boosting recovery to 50.8%.
 
 - **Robustness Training**: Trained models with Gaussian noise (SD=0.02 Å) added to backbones to reduce overfitting to crystallographic details. This improved sequence recovery for AlphaFold-generated backbones (average IDDT >80) while slightly lowering recovery for unperturbed PDB structures.
 
-#### 1.2 In Silico Performance Evaluation
+#### <font color=teal> 1.2 In Silico Performance Evaluation</font>
 
 - **Benchmark vs. Rosetta**: For 402 monomer backbones, ProteinMPNN achieved 52.4% native sequence recovery (vs. 32.9% for Rosetta) and was 200x faster (1.2 vs. 258.8 seconds per 100 residues on a single CPU).
 - **Generalization Testing**: Evaluated on 690 monomers, 732 homomers, and 98 heteromers:
